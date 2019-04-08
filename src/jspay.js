@@ -186,7 +186,7 @@ const RDP = (() => {
     let modal;
 
     const lib = {
-        domain: 'https://connect.api.reddotpay.sg',
+        domain: 'https://connect2.api.reddotpay.sg',
 
         auth: (client, secret) => {
             return fetch(lib.domain + '/v1/authenticate', {
@@ -236,11 +236,7 @@ const RDP = (() => {
                         throw Error("0: auth token is empty");
                     }
                     
-                    if (lib.domain == 'https://connect.api.reddotpay.com') {
-                        auth.payUrl = 'https://connect2.reddotpay.com/m/' + merchant + '#/pay/' + auth.token;
-                    } else {
-                        auth.payUrl = lib.domain.replace('.api.', '.') + '/m/' + merchant + '#/pay/' + auth.token;
-                    }
+                    auth.payUrl = lib.domain.replace('.api.', '.') + '/m/' + merchant + '#/pay/' + auth.token;
                 
                     return auth;
                 });

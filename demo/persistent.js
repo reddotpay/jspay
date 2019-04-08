@@ -37,7 +37,7 @@ if (qs) {
     }
 }
 
-RDP.domain = 'https://connect.api.reddotpay' + (el('isProduction').checked ? '.com': '.sg');
+RDP.domain = 'https://connect2.api.reddotpay' + (el('isProduction').checked ? '.com': '.sg');
 RDP.auth(el('clientKey').value, el('clientSercret').value)
 .then(res => {
     RDP.pay(

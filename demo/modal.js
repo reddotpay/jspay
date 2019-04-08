@@ -46,7 +46,7 @@ el('pay').addEventListener('click', function (e) {
     el('pay').classList.add('btn-light');
     el('pay').disabled = true;
 
-    RDP.domain = 'https://connect.api.reddotpay' + (el('isProduction').checked ? '.com': '.sg');
+    RDP.domain = 'https://connect2.api.reddotpay' + (el('isProduction').checked ? '.com': '.sg');
 
     if (el('amount').value != '') {
         el('totalAmount').innerText = el('amount').value;
