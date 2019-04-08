@@ -100,15 +100,15 @@ RDP.modal.init('modal.css3.css');
             el('pay').classList.remove('btn-success');
             el('pay').classList.add('btn-light');
             el('pay').disabled = true;
-            RDP.auth('16q6glucb2o812mj6incf7vv8r', '1p9q99bp8nmdo839843n3jo43vkeg4s1cqkjtvk0jskh5kmae6bm')
+            RDP.auth(el('clientKey').value, el('clientSercret').value)
                 .then(res => {
                     console.log(res);
                     RDP.modal.pay(
                             res.accessToken,
                             el('paymentRef').innerText,
-                            '7a0cb443-157d-440a-8219-017951e8cf7c',
-                            el('totalAmount').innerText.substring(1),
-                            'USD', {}
+                            el('merchant').value,
+                            el('totalAmount').innerText,
+                            el('totalCcy').innerText, {}
                         )
                         .catch(e => {
                             console.log(e);
