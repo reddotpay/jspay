@@ -39,7 +39,7 @@ index.html
       let el = id => { return document.getElementById(id) };
       
       // To switch to PRODUCTION:
-      // RDP.domain = 'https://connect.api.reddotpay.com';
+      // RDP.domain = 'https://connect2.api.reddotpay.com';
       el('pay').addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
