@@ -88,7 +88,18 @@ el('pay').addEventListener('click', function (e) {
 
     return false;    
 });
+$('#configForm').on('submit', e => {
+    e.stopPropagation();
+    e.preventDefault();
 
+    window.location.href = '?client=' + el('clientKey').value + ':' + el('clientSercret').value +
+        '&merchant=' + el('merchant').value + 
+        '&production=' + (el('isProduction').checked? 'Y': 'N') +
+        '&ccy=' + el('currency').value +
+        '&amt=' + el('amount').value;
+
+    false;
+});
 
 RDP.modal.init('modal.css3.css');
         el('paymentRef').innerText = "OID" + (new Date()).getTime();
