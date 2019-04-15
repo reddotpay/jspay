@@ -110,6 +110,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col" style="text-align:right; padding-top:15px;">
+                                    <button type="submit" class="btn btn-primary">Reload</button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -228,12 +233,6 @@
 
         <div class="container">
             <div class="row py-5">
-                <div class="col-lg-8">
-                    <div class="alert alert-info" role="alert" id="loading">
-                        Calculating payment... Please wait...
-                    </div>
-                    <iframe id="payframe" class="d-none"></iframe>
-                </div>
 
                 <div class="col-lg-4">
 
@@ -291,6 +290,12 @@
                         </div>
                     </form>
 
+                </div>
+                <div class="col-lg-8">
+                    <div class="alert alert-info" role="alert" id="loading">
+                        Calculating payment... Please wait...
+                    </div>
+                    <iframe id="payframe" class="d-none"></iframe>
                 </div>
 
             </div>
