@@ -91,7 +91,7 @@ Attach callbacks to various events when doing a payment
       console.log('Auth response:');
       console.log(auth);
       console.log('Display full payment URL:');
-      console.log(auth.payUrl);
+      console.log(auth.payURI);
     })
     .catch(e => {
       console.log(e.message);
