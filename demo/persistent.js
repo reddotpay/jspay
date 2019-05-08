@@ -49,7 +49,7 @@ RDP.auth(el('clientKey').value, el('clientSercret').value)
         {}
     )
     .then(auth => {
-        el('payframe').src = auth.payUrl;
+        el('payframe').src = auth.payURI;
         el('payframe').classList.remove('d-none');
         el('loading').classList.add('d-none');
     })
