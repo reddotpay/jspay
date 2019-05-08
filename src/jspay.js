@@ -217,7 +217,7 @@ const RDP = (() => {
                 return lib
                     .pay(accessToken, id, merchant, amount, currency, options)
                     .then(auth => {
-                        modal.frame.setAttribute('src', auth.payUrl);
+                        modal.frame.setAttribute('src', auth.pageURI);
                         return auth;
                     })
                     .catch(e => { 
@@ -235,7 +235,7 @@ const RDP = (() => {
                     if (!auth || !auth.token) {
                         throw Error("0: auth token is empty");
                     }
-                    auth.payUrl = auth.pageURI;
+                    console.log(auth);
                     return auth;
                 });
         }
