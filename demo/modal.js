@@ -1,4 +1,11 @@
-RDP.modal.init('modal.css3.css');
+const modal = RDP.modal.init('modal.css3.css');
+
+RDP.initMessageEvent({
+    'closemessage': () => { modal.close(); },
+    'statusmessage': (url) => { 
+        console.log(url);
+    }
+});
 
 el('pay').addEventListener('click', function (e) {
     e.preventDefault();
@@ -52,53 +59,4 @@ el('pay').addEventListener('click', function (e) {
     });
 
     return false;    
-});
-
-const modal = RDP.modal.init('modal.css3.css');
-
-RDP.initMessageEvent({
-    'closemessage': () => { modal.close(); },
-    'statusmessage': (url) => { 
-        console.log(url);
-    }
-});
-
-el('paymentRef').innerText = "OID" + (new Date()).getTime();
-el('pay').addEventListener('click', function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    el('pay').innerText = 'Processing...';
-    el('pay').classList.remove('btn-success');
-    el('pay').classList.add('btn-light');
-    el('pay').disabled = true;
-    RDP.auth(el('clientKey').value, el('clientSercret').value)
-        .then(res => {
-            console.log(res);
-            RDP.modal.pay(
-                    res.accessToken,
-                    el('paymentRef').innerText,
-                    el('merchant').value,
-                    el('totalAmount').innerText,
-                    el('totalCcy').innerText, {}
-                )
-                .catch(e => {
-                    console.log(e);
-                })
-                .finally(res => {
-                    const oid = "OID" + (new Date()).getTime();
-                    console.log("setting oid: " + oid);
-                    el('paymentRef').innerText = oid;
-                });
-        })
-        .catch(e => {
-            console.log(e);
-        })
-        .finally(() => {
-            el('pay').innerText = 'Pay';
-            el('pay').classList.add('btn-success');
-            el('pay').classList.remove('btn-light');
-            el('pay').disabled = false;
-        })
-    return false;
 });

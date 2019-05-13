@@ -1,4 +1,11 @@
-RDP.modal.init('modal.css3.css');
+const modal = RDP.modal.init('modal.css3.css');
+
+RDP.initMessageEvent({
+    'statusmessage': (url) => { 
+        console.log(url);
+    }
+});
+
 RDP.domain = 'https://connect2.api.reddotpay' + (el('isProduction').checked ? '.com': '.sg');
 
 RDP.auth(el('clientKey').value, el('clientSercret').value)
