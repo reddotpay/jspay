@@ -243,6 +243,7 @@ const RDP = (() => {
             const IDX_STATUS = 'statusmessage';
 
             window.addEventListener('message', (message) => {
+                console.log(message);
                 if (!message || !message.data) return;
                 
                 var msg = message.data.split(' ');
