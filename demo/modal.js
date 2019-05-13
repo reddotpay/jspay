@@ -3,6 +3,7 @@ const modal = RDP.modal.init('modal.css3.css');
 RDP.initMessageEvent({
     'closemessage': () => { modal.close(); },
     'statusmessage': (url) => { 
+        console.log(url);
         window.location.href = url;
     }
 });
