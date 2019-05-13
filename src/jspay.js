@@ -243,10 +243,10 @@ const RDP = (() => {
             const IDX_STATUS = 'statusmessage';
 
             window.addEventListener('message', (message) => {
-                if (message.data) return;
+                if (!message || !message.data) return;
                 
                 var msg = message.data.split(' ');
-                if (RDP_CMD_NS != msg[0]) return;
+                if (msg.length === 0 || RDP_CMD_NS != msg[0]) return;
                 
                 switch(msg[1]) {
                     case CMD_MODAL_REDIRECT:
