@@ -26,7 +26,6 @@ const RDP = (() => {
         init() {
             const modal = !this.modal ? this.createElement(this.id): document.getElementById(this.id);
             this.modal = modal;
-            
 
             this.closeButton = modal.querySelector('.close');
             this.spinner = modal.querySelector('.loader');
@@ -89,12 +88,6 @@ const RDP = (() => {
                 frame.classList.remove(hidden);
                 closeButton.classList.remove(hidden);
                 spinner.classList.add(hidden);
-            });
-            
-            window.addEventListener("message", function (message) {
-                if (message.data === "RDP.modal.close") {
-                    close();
-                }
             });
         }
 
@@ -210,6 +203,7 @@ const RDP = (() => {
         modal: {
             init: (css) => {
                 modal = new Modal('rdp-modal', css ? css: 'https://reddotpay.github.io/jspay/modal.css3.css');
+                return modal;
             },
 
             pay: (accessToken, id, merchant, amount, currency, options) => {
@@ -224,7 +218,7 @@ const RDP = (() => {
                         modal.close();
                         throw e;
                     });
-            },
+            }
         },
 
         pay: (accessToken, id, merchant, amount, currency, options) => {
@@ -238,6 +232,31 @@ const RDP = (() => {
                     console.log(auth);
                     return auth;
                 });
+        },
+
+        initMessageEvent: (actions) => {
+            const RDP_CMD_NS = 'rdp-msg';
+            const CMD_MODAL_CLOSE = 'modal-close';
+            const CMD_MODAL_REDIRECT = "redirect";
+        
+            const IDX_CLOSE = 'closemessage';
+            const IDX_STATUS = 'statusmessage';
+
+            window.addEventListener('message', (message) => {
+                if (message.data) return;
+                
+                var msg = message.data.split(' ');
+                if (RDP_CMD_NS != msg[0]) return;
+                
+                switch(msg[1]) {
+                    case CMD_MODAL_REDIRECT:
+                        if (msg.length >= 3 && actions[IDX_STATUS]) actions[IDX_STATUS](msg[2]);
+                        break;
+                            
+                    case CMD_MODAL_CLOSE: default:
+                        if (actions[IDX_CLOSE]) actions[IDX_CLOSE]();
+                }                
+            });
         }
     };
 
