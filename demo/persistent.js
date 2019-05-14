@@ -2,7 +2,19 @@ const modal = RDP.modal.init('modal.css3.css');
 
 RDP.initMessageEvent({
     'redirectmessage': (url) => { 
-        console.log(url);
+        let parseJWT = (token) => {
+            // Warning! This function is only for DEMO PURPOSES. In parsing JWT tokens, you need to
+            // verify the digital signature.
+            var base64Url = token.split('.')[1];
+            var base64 = decodeURIComponent(atob(base64Url).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+         
+            return JSON.parse(base64);
+         };
+
+        console.log(parseJWT(url));
+        // window.location.href = url;
     }
 });
 
