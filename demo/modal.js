@@ -2,8 +2,8 @@ const modal = RDP.modal.init('modal.css3.css');
 
 RDP.initMessageEvent({
     'closemessage': () => { modal.close(); },
-    'statusmessage': (url) => { 
-        console.log(url);
+    'statusmessage': (status) => { 
+        console.log(status);
         // window.location.href = url;
     }
 });
@@ -35,10 +35,7 @@ el('pay').addEventListener('click', function (e) {
             el('paymentRef').innerText,
             el('merchant').value, 
             el('totalAmount').innerText,
-            el('totalCcy').innerText,
-            {
-                returnUrl: 'https://reddotpay.github.io/jspay/example-status.html'
-            }
+            el('totalCcy').innerText
         )
         .catch(e => {
             console.log(e);

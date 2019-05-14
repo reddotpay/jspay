@@ -237,10 +237,12 @@ const RDP = (() => {
         initMessageEvent: (actions) => {
             const RDP_CMD_NS = 'rdp-msg';
             const CMD_MODAL_CLOSE = 'modal-close';
+            const CMD_MODAL_STATUS = "status";
             const CMD_MODAL_REDIRECT = "redirect";
         
             const IDX_CLOSE = 'closemessage';
             const IDX_STATUS = 'statusmessage';
+            const IDX_REDIRECT = 'redirectmessage';
 
             window.addEventListener('message', (message) => {
                 console.log(message);
@@ -250,10 +252,11 @@ const RDP = (() => {
                 if (msg.length === 0 || RDP_CMD_NS != msg[0]) return;
                 
                 switch(msg[1]) {
-                    case CMD_MODAL_REDIRECT:
-                        if (msg.length >= 3 && actions[IDX_STATUS]) actions[IDX_STATUS](msg[2]);
+                    case CMD_MODAL_STATUS: case CMD_MODAL_REDIRECT:
+                        const idx = msg[1] == CMD_MODAL_STATUS ? IDX_STATUS: IDX_REDIRECT;
+                        if (msg.length >= 3 && actions[idx]) actions[idx](msg[2]);
                         break;
-                            
+                    
                     case CMD_MODAL_CLOSE: default:
                         if (actions[IDX_CLOSE]) actions[IDX_CLOSE]();
                 }                

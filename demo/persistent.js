@@ -1,7 +1,7 @@
 const modal = RDP.modal.init('modal.css3.css');
 
 RDP.initMessageEvent({
-    'statusmessage': (url) => { 
+    'redirectmessage': (url) => { 
         console.log(url);
     }
 });
