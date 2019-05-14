@@ -259,6 +259,7 @@ const RDP = (() => {
                     
                     case CMD_MODAL_CLOSE: default:
                         if (actions[IDX_CLOSE]) actions[IDX_CLOSE]();
+                        else if (modal) modal.close();
                 }                
             });
         }

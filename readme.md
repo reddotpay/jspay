@@ -34,12 +34,33 @@ index.html
     <script type="text/javascript">
       // You can overwrite the base CSS file:
       // RDP.modal.init('https://myowndomain.com/assets/modal.css3.css');
-      RDP.modal.init();
-      
-      let el = id => { return document.getElementById(id) };
+      let modal = RDP.modal.init();
       
       // To switch to PRODUCTION:
       // RDP.domain = 'https://connect2.api.reddotpay.com';
+
+      // Adding events 
+      RDP.initMessageEvent({
+          'closemessage': () => {
+            // will be triggered when the close button is clicked
+            // when omitted, `modal.close()` is executed
+            modal.close();
+          },
+          'statusmessage': (status) => {
+            // trigged when the payment gateway to receive a transaction status and the `returnUrl` is empty
+            // alternatively, RDP.domain + '/v1/payments/token/{merchantId}/status/{orderId}' to pull the
+            // payment status
+          },
+          'redirectmessage': (status) => {
+            // trigged when the payment gateway to receive a transaction status and the `returnUrl` is provided
+            // alternatively, RDP.domain + '/v1/payments/token/{merchantId}/status/{orderId}' to pull the
+            // payment status
+          },
+      });
+
+
+      let el = id => { return document.getElementById(id) };
+      
       el('pay').addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
@@ -52,7 +73,11 @@ index.html
             '00000000-0000-0000-0000-000000000000', // Merchant ID
             37.76, // Amount
             'SGD', // SGD
-            { msg: 'HAPPYNEWYEAR19' } // Other details
+            { // Other details
+              // When `returnUrl` is provided in modal, the
+              returnUrl: 'https://domain.com/my/status/page?foo=bar',
+              msg: 'HAPPYNEWYEAR19' // Other details
+            }
           )
           .catch(e => {
             console.log(e); // handle error
