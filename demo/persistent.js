@@ -13,13 +13,15 @@ RDP.initMessageEvent({
             return JSON.parse(base64);
          };
 
-        let result = parseJWT(url);
+        const result = parseJWT(url);
         console.log(result);
         modal.close();
         
-        alert(result.status == "success" ?
-            'Payment successful for order #' + result.orderId:
-            'Payment failed. Error: ' + result.errormsg);
+        setTimeout(() => {
+            alert(result.status == "success" ?
+                'Payment successful for order #' + result.orderId:
+                'Payment failed. Error: ' + result.errormsg);
+        }, 300);
     }
 });
 
