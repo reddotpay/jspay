@@ -18,90 +18,87 @@ Allows the Red Dot Payment (RDP) hosted payment and card capture page to be embe
 
 Enables the payment page to be loaded into the same webpage for a more seemless experience.
 
-index.html
-~~~HTML
-<!doctype html>
-<html lang="en">
-  <head>
-    ...
+CSS for spinners
+```html
     <!-- Specify a spinner (preloader) style -->
     <link rel="stylesheet" type="text/css" media="screen,print" href="https://reddotpay.github.io/jspay/modal.loader2.css3.css">
-  </head>
-  <body>
+```
+
+Payment button will be;
+```html
     <button type="button" id="pay">Pay</button> 
-
     <script src="https://reddotpay.github.io/jspay/src/jspay.js"></script>
-    <script type="text/javascript">
-      // You can overwrite the base CSS file:
-      // RDP.modal.init('https://myowndomain.com/assets/modal.css3.css');
-      let modal = RDP.modal.init();
-      
-      // To switch to PRODUCTION:
-      // RDP.domain = 'https://connect2.api.reddotpay.com';
+```
 
-      // Adding events 
-      RDP.initMessageEvent({
-          'closemessage': () => {
-            // will be triggered when the close button is clicked
-            // when omitted, `modal.close()` is executed
-            modal.close();
-          },
-          'statusmessage': (status) => {
-            // trigged when the payment gateway to receive a transaction status and the `returnUrl` is empty
-            // alternatively, RDP.domain + '/v1/payments/token/{merchantId}/status/{orderId}' to pull the
-            // payment status
-          },
-          'redirectmessage': (status) => {
-            // trigged when the payment gateway to receive a transaction status and the `returnUrl` is provided
-            // alternatively, RDP.domain + '/v1/payments/token/{merchantId}/status/{orderId}' to pull the
-            // payment status
-          },
+Basic installation script
+```javascript
+  // You can overwrite the base CSS file:
+  // RDP.modal.init('https://myowndomain.com/assets/modal.css3.css');
+  let modal = RDP.modal.init();
+  
+  // To switch to PRODUCTION:
+  // RDP.domain = 'https://connect2.api.reddotpay.com';
+
+  // Adding events 
+  RDP.initMessageEvent({
+      'closemessage': () => {
+        // will be triggered when the close button is clicked
+        // when omitted, `modal.close()` is executed
+        modal.close();
+      },
+      'statusmessage': (status) => {
+        // trigged when the payment gateway to receive a transaction status and the `returnUrl` is empty
+        // alternatively, RDP.domain + '/v1/payments/token/{merchantId}/status/{orderId}' to pull the
+        // payment status
+      },
+      'redirectmessage': (status) => {
+        // trigged when the payment gateway to receive a transaction status and the `returnUrl` is provided
+        // alternatively, RDP.domain + '/v1/payments/token/{merchantId}/status/{orderId}' to pull the
+        // payment status
+      },
+  });
+
+
+  let el = id => { return document.getElementById(id) };
+  
+  el('pay').addEventListener('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    RDP.auth(':client-key', ':client-secret')
+    .then(res => {
+      RDP.modal.pay(
+        res.accessToken,
+        'OID' + (new Date()).getTime(), // Order ID
+        '00000000-0000-0000-0000-000000000000', // Merchant ID
+        37.76, // Amount
+        'SGD', // SGD
+        { // Other details
+          // When `returnUrl` is provided in modal, the
+          returnUrl: 'https://domain.com/my/status/page?foo=bar',
+          msg: 'HAPPYNEWYEAR19' // Other details
+        }
+      )
+      .catch(e => {
+        console.log(e); // handle error
+      })
+      .finally(res => {
+        // everything done! do something...
       });
+    })
+    .catch(e => {
+      console.log(e); // handle error
+    });
 
-
-      let el = id => { return document.getElementById(id) };
-      
-      el('pay').addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        RDP.auth(':client-key', ':client-secret')
-        .then(res => {
-          RDP.modal.pay(
-            res.accessToken,
-            'OID' + (new Date()).getTime(), // Order ID
-            '00000000-0000-0000-0000-000000000000', // Merchant ID
-            37.76, // Amount
-            'SGD', // SGD
-            { // Other details
-              // When `returnUrl` is provided in modal, the
-              returnUrl: 'https://domain.com/my/status/page?foo=bar',
-              msg: 'HAPPYNEWYEAR19' // Other details
-            }
-          )
-          .catch(e => {
-            console.log(e); // handle error
-          })
-          .finally(res => {
-            // everything done! do something...
-          });
-        })
-        .catch(e => {
-          console.log(e); // handle error
-        });
-
-        return false;    
-      });
-    </script>
-  </body>
-</html>
-~~~
+    return false;    
+  });
+```
 
 ### Promises
 
 Attach callbacks to various events when doing a payment
 
-~~~Javascript
+```javascript
   RDP.auth(':client-key', ':client-secret')
   .then(res => {
     RDP.pay(
@@ -128,13 +125,13 @@ Attach callbacks to various events when doing a payment
   .catch(e => {
     console.log(e); // handle error
   });
-~~~
+```
 
 ### Build-your-own
 
 Create your own payment flow
 
-~~~HTML
+```html
 <!doctype html>
 <html lang="en">
   <head>
@@ -171,7 +168,8 @@ Create your own payment flow
     </script>
   </body>
 </html>
-~~~
+```
+
 ## Open-source
 
 1. Support only modern browsers
