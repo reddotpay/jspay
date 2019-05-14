@@ -152,7 +152,7 @@ const RDP = (() => {
         }
 
         do(accessToken, id, amount, currency, options) {
-            if ('object' != options) options = {};
+            if ('object' != typeof options) options = {};
             options['orderId'] = id;
             options['amount'] = amount;
             options['currency'] = currency;
