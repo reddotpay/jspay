@@ -15,7 +15,11 @@ RDP.initMessageEvent({
          };
 
         console.log(parseJWT(status));
-        // window.location.href = url;
+        modal.close();
+        
+        alert(status.status == "success" ?
+            'Payment successful for order #' + status.orderId:
+            'Payment failed. Error: ' + status.errormsg);
     }
 });
 
