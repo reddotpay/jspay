@@ -26,7 +26,11 @@ CSS for spinners
 
 Payment button will be;
 ```html
-    <button type="button" id="pay">Pay</button> 
+    <button type="button" id="pay">Pay</button>
+```
+
+And, don't forget the library
+```html
     <script src="https://reddotpay.github.io/jspay/src/jspay.js"></script>
 ```
 
