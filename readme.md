@@ -46,7 +46,7 @@ Basic installation script
   // Adding events 
   RDP.initMessageEvent({
       'closemessage': () => {
-        // will be triggered when the close button is clicked
+        // will be triggered when the close/cancel button is clicked
         // when omitted, `modal.close()` is executed
         modal.close();
       },
