@@ -7,12 +7,83 @@ Allows the Red Dot Payment (RDP) hosted payment and card capture page to be embe
 - Supports ONLY modern browsers (Google Chrome, Firefox, Microsoft Edge, Safari, Opera). To validate the end-users browsers, [outdatedbrowser.com](http://outdatedbrowser.com/en/how) offers a library.
 - The domain has to be registered in by the merchant to Red Dot Payment (Content Security Policy)[https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP].
 
-## Example
+## Demo
 
 - [Modal Example](https://reddotpay.github.io/jspay/example-modal.html)
 - [Always-open Example](https://reddotpay.github.io/jspay/example-persistent.html)
 
 ## Usage
+
+### RDP.domain
+
+Default: _https://connect2.api.reddotpay.sg_
+
+Defines the Red Dot Payment's Connect2 API domain name. To switch to production, set to `https://connect2.api.reddotpay.com`
+
+### RDP.auth(clientKey, clientSecret)
+
+API: _POST /v1/authenticate_
+
+(Async) Authenticates the requester.
+
+#### Request
+
+Parameter    | Type   | Description
+---          | ---    | ---
+__clientKey__    | string | _client key_ issued by _connect2_
+__clientSecret__ | string | _client secret_ issued by _connect2_ associated to the _client key_
+
+#### Response
+
+Parameter        | Description
+---              | ---
+__accessToken__  | used in authenticating payment transaction
+
+### RDP.pay(accessToken, orderID, merchantID, amount, currency, options)
+
+API: _POST /v1/payments/token/{merchantID}_
+
+(Async) Generates a payment page URL.
+
+#### Request
+
+Parameter              | Type          | Description
+---                    | ---           | ---
+__accessToken__        | string        | `accessToken` aquired from __RDP.auth()__
+__orderID__            | string        | merchant reference ID. must be `[A-Za-z0-9\-]{16,100}`
+__merchantID__         | string        | _merchant ID_ acquired from _connect2_
+__amount__             | number,double | item's cost
+__currency__           | string        | currency of the item's cost
+__options__            | object        | other details to be saved as part of the transaction
+__options[returnUrl]__ | string        | URL to be triggered when the `cancel` or `return to merchant` button is clicked
+
+#### Response
+
+Parameter     | Description
+---           | ---
+__pageId__    | unique ID for the payment page template
+__pageURI__   | hosted payment page URL
+__token__     | JWT token for the payment page. The format will be _/m/{merchantID}#/pay/{token}_. This is not normally used as `pageURI` is good enough.
+
+### RDP.modal.init([cssPath])
+
+Initializes the modal window. `cssPath` will be used in for the window. Default is `modal.css3.css`.
+
+### RDP.initMessageEvent({"closemessage": fn(), "statusmessage": fn(), "redirectmessage": fn()})
+
+Attaches an message event listener to the modal
+
+Function            | Description
+---                 | ---
+__closemessage__    | triggers when the `close` or `cancel` button in the modal is clicked
+__statusmessage__   | triggers when the `back to merchant` button in the modal is clicked
+__redirectmessage__ | when the `options[returnUrl]` is provided, triggers when the `back to merchant` button in the modal is clicked
+
+### RDP.modal.pay(accessToken, orderID, merchantID, amount, currency, options)
+
+(Async) Same parameters as __RDP.pay__. This loads the `pageURI` in the modal.
+
+## Examples
 
 ### Modal
 
