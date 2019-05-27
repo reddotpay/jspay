@@ -188,8 +188,8 @@ const RDP = (() => {
                 mode: 'cors',
                 headers: { 'Content-Type': 'application/json; charset=utf-8' },
                 body: JSON.stringify({
-                    'clientId': client,
-                    'secret': secret
+                    'clientKey': client,
+                    'clientSecret': secret
                 })
             }).then(res => {
                 if (!res.ok) {
