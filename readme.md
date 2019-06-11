@@ -105,7 +105,7 @@ And, don't forget the library
     <script src="https://reddotpay.github.io/jspay/src/jspay.js"></script>
 ```
 
-Basic installation script
+Basic browser-to-server installation usage
 ```javascript
   // You can overwrite the base CSS file:
   // RDP.modal.init('https://myowndomain.com/assets/modal.css3.css');
@@ -167,6 +167,50 @@ Basic installation script
 
     return false;    
   });
+```
+
+Basic server-to-server installation usage
+
+```javascript
+// After calling POST https://connect2.reddotpay.com/v1/authenticate
+// and https://connect2.reddotpay.com/v1/payments/token/MERCHANT_ID, 
+// this should yield the pageURI. This is will be your payment page.
+
+// RDP.modal.init('https://myowndomain.com/assets/modal.css3.css');
+let modal = RDP.modal.init();
+  
+// Since we use production in getting the pageURI, we need to switch the library to have the same host
+RDP.domain = 'https://connect2.api.reddotpay.com';
+
+// Adding events 
+RDP.initMessageEvent({
+    'closemessage': () => {
+      // will be triggered when the close/cancel button is clicked
+      // when omitted, `modal.close()` is executed
+      modal.close();
+    },
+    'statusmessage': (status) => {
+      // trigged when the payment gateway to receive a transaction status and the `returnUrl` is empty
+      // alternatively, RDP.domain + '/v1/payments/token/{merchantId}/status/{orderId}' to pull the
+      // payment status
+    },
+    'redirectmessage': (status) => {
+      // trigged when the payment gateway to receive a transaction status and the `returnUrl` is provided
+      // alternatively, RDP.domain + '/v1/payments/token/{merchantId}/status/{orderId}' to pull the
+      // payment status
+    },
+});
+
+let el = id => { return document.getElementById(id) };
+
+// Open the preloader
+modal.open();
+
+// Load the pageURI
+modal.frame.setAttribute('src', pageURI);
+
+// To close the modal
+// modal.close();
 ```
 
 ### Promises
