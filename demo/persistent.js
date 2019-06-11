@@ -3,6 +3,14 @@ const modal = RDP.modal.init('modal.css3.css');
 RDP.initMessageEvent({
     'redirectmessage': (url) => { 
         let parseJWT = (token) => {
+            if (!token) {
+                return {
+                    status: 'unknown',
+                    orderId: 'Unknown',
+                    errormsg: 'Did not receive any jwt token from modal'
+                };
+            }
+            
             // Warning! This function is only for DEMO PURPOSES. In parsing JWT tokens, you need to
             // verify the digital signature.
             var base64Url = token.split('.')[1];
