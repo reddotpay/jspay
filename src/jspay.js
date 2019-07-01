@@ -1,9 +1,6 @@
 "use strict";
 
 const RDP = (() => {
-    const closeSVG = '<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 212.982 212.982" width="12" height="12" style="enable-background:new 0 0 212.982 212.982;" xml:space="preserve">' +
-        '<path style="fill-rule:evenodd;clip-rule:evenodd;" d="M131.804,106.491l75.936-75.936c6.99-6.99,6.99-18.323,0-25.312c-6.99-6.99-18.322-6.99-25.312,0l-75.937,75.937L30.554,5.242c-6.99-6.99-18.322-6.99-25.312,0c-6.989,6.99-6.989,18.323,0,25.312l75.937,75.936L5.242,182.427c-6.989,6.99-6.989,18.323,0,25.312c6.99,6.99,18.322,6.99,25.312,0l75.937-75.937l75.937,75.937c6.989,6.99,18.322,6.99,25.312,0c6.99-6.99,6.99-18.322,0-25.312L131.804,106.491z"/>' +
-        '</svg>';
     const Modal = class {
         // modal;
         // closeButton;
@@ -27,7 +24,6 @@ const RDP = (() => {
             const modal = !this.modal ? this.createElement(this.id): document.getElementById(this.id);
             this.modal = modal;
 
-            this.closeButton = modal.querySelector('.close');
             this.spinner = modal.querySelector('.loader');
             this.frame = modal.getElementsByTagName('iframe')[0];
             this.attachBasicBehaviours();
@@ -47,8 +43,7 @@ const RDP = (() => {
             const modal = document.createElement('DIV');
             modal.setAttribute('id', id);
             modal.classList.add(this.cssHidden);
-            modal.innerHTML = '<div class="content"><span class="close hidden">' + closeSVG +
-                '</span><div class="frame"><div class="loader"></div>' +
+            modal.innerHTML = '<div class="content"><div class="frame"><div class="loader"></div>' +
                 '<div class="frame-cont"><iframe class="hidden"></iframe></div></div></div>';
             document.getElementsByTagName('body')[0].appendChild(modal);
 
@@ -59,24 +54,8 @@ const RDP = (() => {
             const modal = this.modal;
             const frame = this.frame;
             const spinner = this.spinner;
-            const closeButton = this.closeButton;
-            const close = this.close.bind(this);
             const hidden = this.cssHidden;
             const displayNone = this.cssDisplayNone;
-
-            modal.addEventListener('click', e => {
-                if (e.target === modal) {
-                    close();
-                    return false;
-                }
-            });
-        
-            closeButton.addEventListener('click', e => {
-                e.stopPropagation();
-                e.preventDefault();
-                close();
-                return false;
-            });
             
             modal.addEventListener(this.getTransitionEvents().end, e => {
                 const cl = modal.classList;
@@ -86,7 +65,6 @@ const RDP = (() => {
             frame.addEventListener('load', e => {
                 if (!e.target.src || spinner.classList.contains(hidden)) return;
                 frame.classList.remove(hidden);
-                closeButton.classList.remove(hidden);
                 spinner.classList.add(hidden);
             });
         }
@@ -108,7 +86,6 @@ const RDP = (() => {
                 cl.remove(displayNone);
                 this.spinner.classList.remove(hidden);
                 this.frame.classList.add(hidden);
-                this.closeButton.classList.add(hidden);
 
                 setTimeout(() => {
                     // delay hack for smoother transition while removing display:none
