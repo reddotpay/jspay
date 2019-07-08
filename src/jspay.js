@@ -19,6 +19,7 @@ const RDP = (() => {
             this.cssDisplayNone = 'displaynone';
             this.opening = false;
             this.id = id;
+            this.closeEnabled = true;
 
             this.installCSS(css);
         }
@@ -54,6 +55,20 @@ const RDP = (() => {
 
             return modal;
         }
+
+        closeOn() {
+            this.closeEnabled = true;
+            if (this.modal.classList.contains(this.cssHidden)) {
+                closeButton.classList.remove(this.cssHidden);
+            }
+        }
+
+        closeOff() {
+            this.closeEnabled = false;
+            if (!this.modal.classList.contains(this.cssHidden)) {
+                closeButton.classList.add(this.cssHidden);
+            }
+        }
         
         attachBasicBehaviours() {
             const modal = this.modal;
@@ -64,19 +79,22 @@ const RDP = (() => {
             const hidden = this.cssHidden;
             const displayNone = this.cssDisplayNone;
 
-            modal.addEventListener('click', e => {
-                if (e.target === modal) {
+            modal.addEventListener('click', (e => {
+                if (e.target === modal && this.closeEnabled) {
                     close();
                     return false;
                 }
-            });
+            }).bind(this));
         
-            closeButton.addEventListener('click', e => {
+            closeButton.addEventListener('click', (e => {
                 e.stopPropagation();
                 e.preventDefault();
-                close();
+                if (this.closeEnabled) {
+                    close();
+                }
+                
                 return false;
-            });
+            }).bind(this));
             
             modal.addEventListener(this.getTransitionEvents().end, e => {
                 const cl = modal.classList;
