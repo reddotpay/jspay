@@ -58,15 +58,15 @@ const RDP = (() => {
 
         closeOn() {
             this.closeEnabled = true;
-            if (this.closeButton.classList.contains(this.cssHidden)) {
-                this.closeButton.classList.remove(this.cssHidden);
+            if (this.modal.classList.contains(this.cssHidden)) {
+                closeButton.classList.remove(this.cssHidden);
             }
         }
 
         closeOff() {
             this.closeEnabled = false;
-            if (!this.closeButton.classList.contains(this.cssHidden)) {
-                this.closeButton.classList.add(this.cssHidden);
+            if (!this.modal.classList.contains(this.cssHidden)) {
+                closeButton.classList.add(this.cssHidden);
             }
         }
         
@@ -236,15 +236,7 @@ const RDP = (() => {
                         modal.close();
                         throw e;
                     });
-            },
-
-            closeOff: () => {
-                modal.closeOff();
-            },
-
-            closeOn: () => {
-                modal.closeOn();
-            }            
+            }
         },
 
         pay: (accessToken, id, merchant, amount, currency, options) => {
@@ -269,8 +261,6 @@ const RDP = (() => {
             const IDX_CLOSE = 'closemessage';
             const IDX_STATUS = 'statusmessage';
             const IDX_REDIRECT = 'redirectmessage';
-            const CLOSE_ENABLE = 'close-enable';
-            const CLOSE_DISABLE = 'close-disable';
 
             window.addEventListener('message', (message) => {
                 if (!message || !message.data) return;
@@ -279,12 +269,6 @@ const RDP = (() => {
                 if (msg.length === 0 || RDP_CMD_NS != msg[0]) return;
                 
                 switch(msg[1]) {
-                    case CLOSE_ENABLE:
-                        modal.closeOn();
-                        break;
-                    case CLOSE_DISABLE:
-                        modal.closeOff();
-                        break;
                     case CMD_MODAL_STATUS: case CMD_MODAL_REDIRECT:
                         const idx = msg[1] == CMD_MODAL_STATUS ? IDX_STATUS: IDX_REDIRECT;
                         if (msg.length >= 3 && actions[idx]) actions[idx](msg[2]);
