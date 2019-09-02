@@ -291,6 +291,9 @@ Create your own payment flow
 
 ## Open-source
 
+Main repository:
+https://github.com/reddotpay/jspay
+
 1. Support only modern browsers
 2. Do not add any library dependencies
 3. Use only vanilla codes
