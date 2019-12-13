@@ -155,7 +155,6 @@ const RDP = (() => {
                     return {'start': transitions[i][0], 'end': transitions[i][1]};
                 }
             }
-            
             return console.error('transitionend event not supported. browser update required');
         }
     }
@@ -169,8 +168,11 @@ const RDP = (() => {
             this.merchant = merchant;
         }
 
-        do(accessToken, id, amount, currency, options) {
-            if ('object' != typeof options) options = {};
+        do(id, amount, currency, clientKey, clientSecret) {
+            let options = {
+                clientKey,
+                clientSecret
+            };
             options['orderId'] = id;
             options['amount'] = amount;
             options['currency'] = currency;
@@ -181,7 +183,6 @@ const RDP = (() => {
                 mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json; charset=utf-8',
-                    'Authorization': accessToken
                 },
                 body: JSON.stringify(options)
             })
@@ -197,7 +198,7 @@ const RDP = (() => {
     let modal;
 
     const lib = {
-        domain: 'https://connect2.api.reddotpay.sg',
+        domain: ('https://connect3.api.reddotpay.dev' || 'https://connect2.api.reddotpay.sg'),
 
         auth: (client, secret) => {
             return fetch(lib.domain + '/v1/authenticate', {
@@ -224,11 +225,15 @@ const RDP = (() => {
                 return modal;
             },
 
-            pay: (accessToken, id, merchant, amount, currency, options) => {
+            pay: (id, merchant, amount, currency, clientKey, clientSecret) => {
                 modal.open();
                 return lib
-                    .pay(accessToken, id, merchant, amount, currency, options)
+                    .pay(id, merchant, amount, currency, clientKey, clientSecret)
                     .then(auth => {
+                        let requestPathArr = auth.pageURI.split('https://connect3.reddotpay.dev');
+                        let requestPath = requestPathArr[1];
+                        let requestUrl = 'https://connect3.reddotpay.dev' + requestPath;
+                        console.log('auth : ', auth);
                         modal.frame.setAttribute('src', auth.pageURI);
                         return auth;
                     })
@@ -247,10 +252,10 @@ const RDP = (() => {
             }            
         },
 
-        pay: (accessToken, id, merchant, amount, currency, options) => {
+        pay: (id, merchant, amount, currency, clientKey, clientSecret) => {
             const pay = new Pay(merchant, lib.domain);
             return pay
-                .do(accessToken, id, amount, currency, options)
+                .do(id, amount, currency, clientKey, clientSecret)
                 .then(auth => {
                     if (!auth || !auth.token) {
                         throw Error("0: auth token is empty");
