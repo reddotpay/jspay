@@ -52,7 +52,8 @@ el('pay').addEventListener('click', function (e) {
     el('pay').classList.add('btn-light');
     el('pay').disabled = true;
 
-    RDP.domain = 'https://connect2.api.reddotpay' + (el('isProduction').checked ? '.com': '.sg');
+    // RDP.domain = 'https://connect2.api.reddotpay' + (el('isProduction').checked ? '.com': '.sg');
+    RDP.domain =('https://connect3.api.reddotpay.dev' ||'https://connect2.api.reddotpay' + (el('isProduction').checked ? '.com': '.dev'));
 
     if (el('amount').value != '') {
         el('totalAmount').innerText = el('amount').value;
@@ -62,15 +63,17 @@ el('pay').addEventListener('click', function (e) {
         el('totalCcy').innerText = el('currency').value;
     }
 
-    RDP.auth(el('clientKey').value, el('clientSercret').value)
-    .then(res => {
-        console.log(res);
+    // RDP.auth(el('clientKey').value, el('clientSercret').value)
+    // .then(res => {
+    //     console.log(res);
         RDP.modal.pay(
-            res.accessToken,
+            // res.accessToken,
             el('paymentRef').innerText,
-            el('merchant').value, 
+            el('merchant').value,
             el('totalAmount').innerText,
-            el('totalCcy').innerText
+            el('totalCcy').innerText,
+            el('clientKey').value,
+            el('clientSercret').value
         )
         .catch(e => {
             console.log(e);
@@ -79,8 +82,8 @@ el('pay').addEventListener('click', function (e) {
             const oid = "OID" + (new Date()).getTime();
             console.log("setting oid: " + oid);
             el('paymentRef').innerText = oid;
-        });
-    })
+        })
+    // })
     .catch(e => {
         console.log(e);
     })
